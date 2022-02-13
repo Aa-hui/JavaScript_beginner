@@ -183,3 +183,55 @@
 
 #### 1.5流程控制-分支
 
+- [三元表达式](https://zh.javascript.info/ifelse)，借助`条件运算符？`
+
+  语法：
+
+  ```javascript
+  //由三部分组成 ①表达式 ？ ②value1 : ③value2;
+  let result = condition ? value1 : value2;
+  ```
+
+  计算条件结果，如果结果为真，则返回 `value1`，否则返回 `value2`。
+
+  例如：
+
+  ```javascript
+  let accessAllowed = (age > 18) ? true : false;
+  ```
+
+  技术上讲，我们可以省略 `age > 18` 外面的括号。**问号运算符的优先级较低**，所以它会在比较运算符 `>` 后执行。
+
+  下面这个示例会执行和前面那个示例相同的操作：
+
+  ```javascript
+  // 比较运算符 "age > 18" 首先执行
+  //（不需要将其包含在括号中）
+  let accessAllowed = age > 18 ? true : false;
+  ```
+
+  **但括号可以使代码可读性更强，所以我们建议使用它们**
+
+  多个三元运算符号的使用例子：
+
+  例如：
+
+  ```javascript
+  let age = prompt('age?', 18);
+  
+  let message = (age < 3) ? 'Hi, baby!' :
+    (age < 18) ? 'Hello!' :
+    (age < 100) ? 'Greetings!' :
+    'What an unusual age!';
+  
+  alert( message );
+  ```
+
+  可能很难一下子看出发生了什么。但经过仔细观察，我们可以看到它只是一个普通的检查序列。
+
+  1. 第一个问号检查 `age < 3`。
+  2. 如果为真 — 返回 `'Hi, baby!'`。否则，会继续执行冒号 `":"` 后的表达式，检查 `age < 18`。
+  3. 如果为真 — 返回 `'Hello!'`。否则，会继续执行下一个冒号 `":"` 后的表达式，检查 `age < 100`。
+  4. 如果为真 — 返回 `'Greetings!'`。否则，会继续执行最后一个冒号 `":"` 后面的表达式，返回 `'What an unusual age!'`。
+
+  上述等价为`if .... else if`

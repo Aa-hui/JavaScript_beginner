@@ -155,3 +155,31 @@ console.log(Num1); //10
  */
 
 /********************           逻辑分支         ***********************/
+// 测试案例：判断闰年
+// 补充常识：普通闰年是4的倍数但不是100的倍数；世纪闰年是400的倍数
+/* let year = prompt('请输入一个年份');
+if (year % 4 == 0 && year % 100 != 0) {
+    alert('您输入的年份是普通闰年');
+} else {
+    if (year % 400 == 0) {
+        alert('您输入的年份是世纪闰年');
+    } else {
+        alert('您输入的年份不是闰年');
+    }
+}
+// 练习案例：成绩分级
+let grade = prompt('请输入您的成绩');
+if (grade >= 90) {
+    alert('成绩等级为A');
+} else if (grade >= 80) {
+    alert('成绩等级为B');
+} else if (grade >= 60) {
+    alert('成绩等级为C');
+} else {
+    alert('成绩等级为D');
+}
+document.write(typeof grade); */
+
+// 三元表达式
+let bigOne = (1 >= 10) ? 1 : 10; //如果1>=10为真，输出？后的第一个值，否则输出第二个值
+document.write(bigOne);
