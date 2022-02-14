@@ -183,3 +183,29 @@ document.write(typeof grade); */
 // 三元表达式
 let bigOne = (1 >= 10) ? 1 : 10; //如果1>=10为真，输出？后的第一个值，否则输出第二个值
 document.write(bigOne);
+//switch
+let a = prompt('a?');
+
+if (a == 0) {
+    alert(0);
+}
+if (a == 1) {
+    alert(1);
+}
+
+if (a == 2 || a == 3) {
+    alert('2,3');
+}
+//转换为switch的格式为
+switch (a) {
+    case 0:
+    case 1: //这里使用了分组
+        alert(a);
+        break;
+    case 2:
+    case 3:
+        alert('2,3');
+        break;
+    default:
+        break;
+}

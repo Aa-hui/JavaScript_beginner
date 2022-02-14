@@ -171,7 +171,21 @@
       //第五行中，123为真，发生逻辑中断，testNum++将不再运行，值仍为0
       ```
 
-      
+- 空值合并运算符`??`
+
+  `a ?? b` 的结果是：
+
+  - 如果 `a` 是已定义的，则结果为 `a`，
+  - 如果 `a` 不是已定义的，则结果为 `b`
+
+  类似的，和上文中提到的或的逻辑中断有异曲同工之妙
+
+  它们之间重要的区别是：
+
+  - `||` 返回第一个 **真** 值。
+  - `??` 返回第一个 **已定义的** 值。
+
+  换句话说，`||` 无法区分 `false`、`0`、空字符串 `""` 和 `null/undefined`。它们都一样 —— 假值（falsy values）。如果其中任何一个是 `||` 的第一个参数，那么我们将得到第二个参数作为结果。
 
 - 赋值运算符：
 
@@ -235,3 +249,91 @@
   4. 如果为真 — 返回 `'Greetings!'`。否则，会继续执行最后一个冒号 `":"` 后面的表达式，返回 `'What an unusual age!'`。
 
   上述等价为`if .... else if`
+
+- `switch`语句
+
+  `switch` 的例子
+
+  ```javascript
+  let a = 2 + 2;
+  
+  switch (a) {
+    case 3:
+      alert( 'Too small' );
+      break;
+    case 4:
+      alert( 'Exactly!' );
+      break;
+    case 5:
+      alert( 'Too big' );
+      break;
+    default:                              //如果没有符合条件的case，将会执行default
+      alert( "I don't know such values" );
+  }
+  ```
+
+  一般来说，`break`是必不可少的，但可以通过这个特性，实现case分组（只是因为break）
+
+  共享同一段代码的几个 `case` 分支可以被分为一组：
+
+  比如，如果我们想让 `case 3` 和 `case 5` 执行同样的代码：
+
+  ```javascript
+  let a = 3;
+  
+  switch (a) {
+    case 4:
+      alert('Right!');
+      break;
+  
+    case 3: // (*) 下面这两个 case 被分在一组
+    case 5:
+      alert('Wrong!');
+      alert("Why don't you take a math class?");
+      break;
+  
+    default:
+      alert('The result is strange. Really.');
+  }
+  ```
+
+  现在 `3` 和 `5` 都显示相同的信息。
+
+  **[类型很关键](https://zh.javascript.info/switch#lei-xing-hen-guan-jian)**
+
+  强调一下，这里的相等是**严格相等**。被比较的值必须是相同的类型才能进行匹配。
+
+  比如，我们来看下面的代码：
+
+  ```javascript
+  let arg = prompt("Enter a value?")
+  switch (arg) {
+    case '0':
+    case '1':
+      alert( 'One or zero' );
+      break;
+  
+    case '2':
+      alert( 'Two' );
+      break;
+  
+    case 3:
+      alert( 'Never executes!' );
+      break;
+    default:
+      alert( 'An unknown value' )
+  }
+  ```
+
+  1. 在 `prompt` 对话框输入 `0`、`1`，第一个 `alert` 弹出。
+  2. 输入 `2`，第二个 `alert` 弹出。
+  3. 但是输入 `3`，**因为 `prompt` 的结果是字符串类型的 `"3"`**，不严格相等 `===` 于数字类型的 `3`，所以 `case 3` 不会执行！因此 `case 3` 部分是一段无效代码。所以会执行 `default` 分支。（回顾数据类型的转换，借助`parseInt`函数或者利用`*和-`进行隐式转换）
+
+- `switch`和`if else`
+
+  ![image-20220214171115971](JavaScript听课笔记.assets/image-20220214171115971.png)
+
+  解释一下第三点：因为`switch`是确定了选择值之后**直接跳转**到那个特定的分支，`if else`需要遍历
+
+#### 1.6流程控制-循环
+
