@@ -56,6 +56,64 @@
 
 #### 1.4运算符
 
+- 一元运算符
+
+  如果将**一元加运算符**用到非数值，将会执行和Number函数相同的类型转换。
+
+  例如：
+
+  这里有一段代码，要求用户输入两个数字并显示它们的总和。
+
+  它的运行结果不正确。下面例子中的输出是 `12`（对于默认的 prompt 的值）。
+
+  为什么会这样？修正它。结果应该是 `3`。
+
+  ```javascript
+  let a = prompt("First number?", 1);
+  let b = prompt("Second number?", 2);
+  
+  alert(a + b); // 12
+  ```
+
+  **解决方案**
+
+  原因是 prompt 以字符串的形式返回用户的输入。
+
+  所以变量的值分别为 `"1"` 和 `"2"`。
+
+  ```javascript
+  let a = "1"; // prompt("First number?", 1);
+  let b = "2"; // prompt("Second number?", 2);
+  
+  alert(a + b); // 12
+  ```
+
+  我们应该做的是，在 `+` 之前将字符串转换为数字。例如，使用 `Number()` 或在 `prompt` 前加 `+`。**（利用一元加运算符改变数据类型）**
+
+  **区别是什么呢：`+`做一元运算符的时候，可以用来改变数据类型，做二元运算符的时候，若前后两量有一个为字符串，将执行字符串拼接**
+
+  例如，就在 `prompt` 之前加 `+`：
+
+  ```javascript
+  let a = +prompt("First number?", 1);
+  let b = +prompt("Second number?", 2);
+  
+  alert(a + b); // 3
+  ```
+
+  或在 `alert` 中：
+
+  ```javascript
+  let a = prompt("First number?", 1);
+  let b = prompt("Second number?", 2);
+  
+  alert(+a + +b); // 3
+  ```
+
+  在最新的代码中，**同时使用一元和二元的 `+`**。看起来很有趣，不是吗？
+
+
+
 - 常见的基础用法
 
   <img src="JavaScript听课笔记.assets/image-20220130121104119.png" alt="image-20220130121104119" style="zoom:80%;" />
@@ -336,4 +394,172 @@
   解释一下第三点：因为`switch`是确定了选择值之后**直接跳转**到那个特定的分支，`if else`需要遍历
 
 #### 1.6流程控制-循环
+
+基本的循环为for和while循环，不再赘述，重点说明一下`break`和`continue`
+
+- **break**
+
+  通常条件为假时，循环会终止。
+
+  但我们随时都可以使用 `break` 指令强制退出。
+
+  例如，下面这个循环要求用户输入一系列数字，在输入的内容不是数字时“终止”循环。
+
+  ```javascript
+  let sum = 0;
+  
+  while (true) {
+  
+    let value = +prompt("Enter a number", '');
+  
+    if (!value) break; // (*)
+  
+    sum += value;
+  
+  }
+  alert( 'Sum: ' + sum );
+  ```
+
+  如果用户输入空行或取消输入，在 `(*)` 行的 `break` 指令会被激活。它立刻终止循环，将控制权传递给循环后的第一行，即，`alert`。
+
+  根据需要，"无限循环 + `break`" 的组合非常适用于不必在循环开始/结束时检查条件，但需要在中间甚至是主体的多个位置进行条件检查的情况。
+
+  
+
+- **continue**
+
+  `continue` 指令是 `break` 的“轻量版”。它不会停掉整个循环。而是**停止当前这一次迭代**，并强制启动新一轮循环（如果条件允许的话）。
+
+  如果我们完成了当前的迭代，并且希望继续执行下一次迭代，我们就可以使用它。
+
+  下面这个循环使用 `continue` 来只输出奇数：
+
+  ```javascript
+  for (let i = 0; i < 10; i++) {
+  
+    //如果为真，跳过循环体的剩余部分。
+    if (i % 2 == 0) continue;
+  
+    alert(i); // 1，然后 3，5，7，9
+  }
+  ```
+
+  对于偶数的 `i` 值，`continue` 指令会停止本次循环的继续执行，将控制权传递给下一次 `for` 循环的迭代（使用下一个数字）。因此 `alert` 仅被奇数值调用。
+
+  **`continue` 指令利于减少嵌套**
+
+  显示奇数的循环可以像下面这样：
+
+  ```javascript
+  for (let i = 0; i < 10; i++) {
+  
+    if (i % 2) {
+      alert( i );
+    }
+  
+  }
+  ```
+
+  从技术角度看，它与上一个示例完全相同。当然，我们可以将代码包装在 `if` 块而不使用 `continue`。
+
+  但在副作用方面，它多创建了一层嵌套（大括号内的 `alert` 调用）。如果 `if` 中代码有多行，则可能会降低代码整体的可读性。
+
+- **禁止 `break/continue` 在 ‘?’ 的右边**
+
+  请注意非表达式的语法结构不能与三元运算符 `?` 一起使用。特别是 `break/continue` 这样的指令是不允许这样使用的。
+
+  例如，我们使用如下代码：
+
+  ```javascript
+  if (i > 5) {
+    alert(i);
+  } else {
+    continue;
+  }
+  ```
+
+  ……用问号重写：
+
+  ```javascript
+  (i > 5) ? alert(i) : continue; // continue 不允许在这个位置
+  ```
+
+  ……代码会停止运行，并显示有语法错误。
+
+  这是不（建议）使用问号 `?` 运算符替代 `if` 语句的另一个原因。
+
+- **break/continue 标签**（标签是循环之前带有冒号的标识符）
+
+  有时候我们需要从一次从**多层嵌套**的循环中跳出来。
+
+  例如，下述代码中我们的循环使用了 `i` 和 `j`，从 `(0,0)` 到 `(3,3)` 提示坐标 `(i, j)`：
+
+  ```javascript
+  for (let i = 0; i < 3; i++) {
+  
+    for (let j = 0; j < 3; j++) {
+  
+      let input = prompt(`Value at coords (${i},${j})`, '');
+  
+      // 如果我想从这里退出并直接执行 alert('Done!')
+    }
+  }
+  
+  alert('Done!');
+  ```
+
+  我们需要提供一种方法，以在用户取消输入时来停止这个过程。
+
+  在 `input` 之后的普通 `break` 只会打破内部循环。这还不够 —— 标签可以实现这一功能！
+
+  **标签** 是在循环之前带有冒号的标识符：
+
+  ```javascript
+  labelName: for (...) {
+    ...
+  }
+  ```
+
+  `break <labelName>` 语句跳出循环至标签处：
+
+  ```javascript
+  outer: for (let i = 0; i < 3; i++) {
+  
+    for (let j = 0; j < 3; j++) {
+  
+      let input = prompt(`Value at coords (${i},${j})`, '');
+  
+      // 如果是空字符串或被取消，则中断并跳出这两个循环。
+      if (!input) break outer; // (*)
+  
+      // 用得到的值做些事……
+    }
+  }
+  alert('Done!');
+  ```
+
+  上述代码中，`break outer` **向上寻找**名为 `outer` 的标签并**跳出当前循环**。
+
+  因此，控制权直接从 `(*)` 转至 `alert('Done!')`。
+
+  我们还可以将标签移至单独一行：
+
+  ```javascript
+  outer:
+  for (let i = 0; i < 3; i++) { ... }
+  ```
+
+  `continue` 指令也可以与标签一起使用。在这种情况下，执行跳转到标记循环的下一次迭代
+
+
+
+### 2.数组
+
+
+
+
+
+
+
+
 

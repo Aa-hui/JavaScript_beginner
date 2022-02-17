@@ -181,31 +181,43 @@ if (grade >= 90) {
 document.write(typeof grade); */
 
 // 三元表达式
-let bigOne = (1 >= 10) ? 1 : 10; //如果1>=10为真，输出？后的第一个值，否则输出第二个值
-document.write(bigOne);
-//switch
-let a = prompt('a?');
+// let bigOne = (1 >= 10) ? 1 : 10; //如果1>=10为真，输出？后的第一个值，否则输出第二个值
+// document.write(bigOne);
+// //switch
+// let a = +prompt('a?', '');
+// console.log(a);
 
-if (a == 0) {
-    alert(0);
-}
-if (a == 1) {
-    alert(1);
-}
+// if (a == 0) {
+//     alert(0);
+// }
+// if (a == 1) {
+//     alert(1);
+// }
 
-if (a == 2 || a == 3) {
-    alert('2,3');
+// if (a == 2 || a == 3) {
+//     alert('2,3');
+// }
+// //转换为switch的格式为
+// switch (a) {
+//     case 0:
+//     case 1: //这里使用了分组
+//         alert(a);
+//         break;
+//     case 2:
+//     case 3:
+//         alert('2,3');
+//         break;
+//     default:
+//         break;
+// }
+
+// 下面这个循环要求用户输入一系列数字，在输入的内容不是数字时“终止”循环。
+let sum = 0;
+// 下列函数是求和函数
+while (true) {
+    let value = +prompt("Enter a number", '');
+    //借助一元操作符将输入的数据转换为number，若输入的不是数字，将转换为NaN
+    if (!value) break; // (*)
+    sum += value;
 }
-//转换为switch的格式为
-switch (a) {
-    case 0:
-    case 1: //这里使用了分组
-        alert(a);
-        break;
-    case 2:
-    case 3:
-        alert('2,3');
-        break;
-    default:
-        break;
-}
+alert('Sum: ' + sum);
