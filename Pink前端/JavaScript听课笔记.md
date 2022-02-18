@@ -5,6 +5,8 @@
 > **在JavaScript中，推荐使用单引号。**
 >
 > 符号两端最好各自有一个空格，推荐插件`JS-CSS-HTML Formatter`可以直接格式化
+>
+> 本笔记的内容安排跟随[Pink老师的视频课](https://www.bilibili.com/video/BV1Sy4y1C7ha?p=97&spm_id_from=pageDriver)，同步参考了[现代JavaScript教程](https://zh.javascript.info/)
 
 ### 1.初识JavaScript
 
@@ -555,11 +557,218 @@
 
 ### 2.数组
 
+创建一个空数组有两种语法：
 
+```javascript
+let arr = new Array();
+let arr = [];
+```
 
+绝大多数情况下使用的都是第二种语法。我们可以在方括号中添加初始元素：
 
+``` javascript
+let fruits = ["Apple", "Orange", "Plum"];
+//定义的时候可以都以‘，’结尾，这样格式更为统一
+let fruits = [
+  "Apple",
+  "Orange",
+  "Plum",
+];
+//每一行都是相似的，更容易添加新的元素
+```
 
+- `length` 属性的值是数组中元素的总个数：
 
+  ```javascript
+  let fruits = ["Apple", "Orange", "Plum"];
+  
+  alert( fruits.length ); // 3
+  ```
 
+数组可以存储任何类型的元素。
 
+例如:
 
+```javascript
+// 混合值
+let arr = [ 'Apple', { name: 'John' }, true, function() { alert('hello'); } ];
+
+// 获取索引为 1 的对象然后显示它的 name
+alert( arr[1].name ); // John
+
+// 获取索引为 3 的函数并执行
+arr[3](); // hello
+```
+
+#### 2.1pop/push, shift/unshift 方法
+
+- 栈：最后放进去的内容是最先接收的，也叫做 LIFO（Last-In-First-Out），即后进先出法则；
+- 队列相对应的叫做 FIFO（First-In-First-Out），即先进先出。
+
+> **队列（queue）**是最常见的使用数组的方法之一。在计算机科学中，这表示支持两个操作的一个有序元素的集合：
+>
+> - `push` 在末端添加一个元素.
+>
+> - `shift` 取出队列首端的一个元素，整个队列往前移，这样原先排第二的元素现在排在了第一。
+>
+>   <img src="JavaScript听课笔记.assets/image-20220218110938518.png" alt="image-20220218110938518" style="zoom:50%;" />
+>
+> 这两种操作数组都支持。
+>
+> 队列的应用在实践中经常会碰到。例如需要在屏幕上显示消息队列。
+>
+> 数组还有另一个用例，就是**数据结构栈**。
+>
+> 它支持两种操作：
+>
+> - `push` 在末端添加一个元素.
+> - `pop` 从末端取出一个元素.
+>
+> - <img src="JavaScript听课笔记.assets/image-20220218110951385.png" alt="image-20220218110951385" style="zoom:50%;" />
+>
+> 所以新元素的添加和取出都是从“末端”开始的。
+>
+> 栈通常被被形容成一叠卡片：要么在最上面添加卡片，要么从最上面拿走卡片：
+>
+> 对于栈来说，最后放进去的内容是最先接收的，也叫做 LIFO（Last-In-First-Out），即后进先出法则。而与队列相对应的叫做 FIFO（First-In-First-Out），即先进先出。
+
+**JavaScript 中的数组既可以用作队列，也可以用作栈。**它们允许你从首端/末端来添加/删除元素。
+
+这在计算机科学中，允许这样的操作的数据结构被称为 [双端队列（deque）](https://en.wikipedia.org/wiki/Double-ended_queue)。
+
+##### 2.1.1作用于数组末端的方法
+
+**`pop`取出并返回数组的最后一个元素：**
+
+```javascript
+let fruits = ["Apple", "Orange", "Pear"];
+
+alert( fruits.pop() ); // 移除 "Pear" 然后 alert 显示出来
+
+alert( fruits ); // Apple, Orange
+```
+
+**`push`在数组末端添加元素：**
+
+```javascript
+let fruits = ["Apple", "Orange"];
+
+fruits.push("Pear");
+
+alert( fruits ); // Apple, Orange, Pear
+```
+
+调用 `fruits.push(...)` 与 `fruits[fruits.length] = ...` 是一样的。（表示在数组的后一个重新定义一个元素）
+
+##### 2.1.2作用于数组首端的方法
+
+- `shift`
+
+  取出数组的第一个元素并返回它：
+
+  ```js
+  let fruits = ["Apple", "Orange", "Pear"]; 
+  alert( fruits.shift() ); // 移除 Apple 然后 alert 显示出来 
+  alert( fruits ); // Orange, Pear
+  ```
+
+- `unshift`
+
+  在数组的首端添加元素：
+
+  ```js
+  let fruits = ["Orange", "Pear"]; 
+  fruits.unshift('Apple'); 
+  alert( fruits ); // Apple, Orange, Pear
+  ```
+
+`push` 和 `unshift` 方法都可以一次添加**多个**元素：
+
+```javascript
+let fruits = ["Apple"];
+
+fruits.push("Orange", "Peach");
+fruits.unshift("Pineapple", "Lemon");
+
+// ["Pineapple", "Lemon", "Apple", "Orange", "Peach"]
+alert( fruits );
+```
+
+#### 2.2数组内部
+
+数组是一种**特殊的对象**。使用方括号来访问属性 `arr[0]` 实际上是来自于对象的语法。它其实与 `obj[key]` 相同，其中 `arr` 是对象，而数字用作键（key）。
+
+它们扩展了对象，提供了**特殊的方法**来处理有序的数据集合以及 `length` 属性。但从**本质上讲，它仍然是一个对象。**
+
+记住，在 JavaScript 中只有 8 种基本的数据类型（详见 [数据类型](https://zh.javascript.info/types) 一章）。**数组是一个对象，因此其行为也像一个对象。**
+
+例如，它是通过**引用**来复制的：
+
+（下面的例子总，通过引用复制了两个数组`arr`和`fruits`，我们变更了`arr`后，`fruits`也变更了）
+
+```javascript
+let fruits = ["Banana"]
+
+let arr = fruits; // 通过引用复制 (两个变量引用的是相同的数组)
+
+alert( arr === fruits ); // true
+
+arr.push("Pear"); // 通过引用修改数组
+
+alert( fruits ); // Banana, Pear — 现在有 2 项了
+```
+
+……但是数组真正特殊的是它们的**内部实现**。
+
+JavaScript 引擎尝试把这些元素一个接一个地存储在**连续的内存区域**，就像本章的插图显示的一样，而且还有一些其它的**优化**，以使数组运行得非常快。
+
+但是，如果我们不像“有序集合”那样使用数组，而是像常规对象那样使用数组，这些就都**不生效**了。
+
+ 如果Javascript 引擎发现，我们在像使用常规对象一样使用数组，那么针对数组的优化就不再适用了，然后对应的优化就会被关闭，这些优化所带来的优势也就荡然无存了。
+
+**数组误用**的几种方式:
+
+- 添加一个**非数字的属性**，比如 `arr.test = 5`。
+- 制造**空洞**，比如：添加 `arr[0]`，然后添加 `arr[1000]` (它们中间什么都没有)。
+- 以倒**序填充**数组，比如 `arr[1000]`，`arr[999]` 等等。
+
+请将数组视为作用于 **有序数据** 的特殊结构。它们为此提供了特殊的方法。**数组在 JavaScript 引擎内部是经过特殊调整的，使得更好地作用于连续的有序数据，所以请以正确的方式使用数组**。如果你需要任意键值，那很有可能实际上你需要的是常规对象 `{}`。
+
+#### 2.3性能
+
+`push/pop` 方法运行的比较快，而 `shift/unshift` 比较慢。
+
+<img src="JavaScript听课笔记.assets/image-20220218113836063.png" alt="image-20220218113836063" style="zoom: 67%;" />
+
+为什么作用于数组的末端会比首端快呢？让我们看看在执行期间都发生了什么：
+
+```javascript
+fruits.shift(); // 从首端取出一个元素
+```
+
+只获取并移除数字 `0` 对应的元素是不够的。其它元素也需要被重新编号。
+
+`shift` 操作必须做三件事:
+
+1. 移除索引为 `0` 的元素。
+2. 把所有的元素向左移动，把索引 `1` 改成 `0`，`2` 改成 `1` 以此类推，对其重新编号。
+3. 更新 `length` 属性。
+4. ![image-20220218113954693](JavaScript听课笔记.assets/image-20220218113954693.png)
+
+**数组里的元素越多，移动它们就要花越多的时间，也就意味着越多的内存操作。**
+
+`unshift` 也是一样：为了在数组的首端添加元素，我们首先需要将现有的元素向右移动，增加它们的索引值。
+
+那 `push/pop` 是什么样的呢？它们不需要移动任何东西。如果从末端移除一个元素，`pop` 方法只需要清理索引值并缩短 `length` 就可以了。
+
+`pop` 操作的行为：
+
+```javascript
+fruits.pop(); // 从末端取走一个元素
+```
+
+![image-20220218114006899](JavaScript听课笔记.assets/image-20220218114006899.png)
+
+**`pop` 方法不需要移动任何东西，因为其它元素都保留了各自的索引。这就是为什么 `pop` 会特别快。**
+
+`push` 方法也是一样的。
