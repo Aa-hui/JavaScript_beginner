@@ -120,3 +120,19 @@ console.log(countries.sort());
 console.log(countries.sort((a, b) => a.localeCompare(b))); */
 
 /**************************           函数              ********************************/
+// 函数是一个值
+function sayHi() {
+    document.write('Hi World');
+}
+let sayHello = function() {
+    document.write('Hello');
+}
+console.log(sayHi);
+console.log(sayHello);
+// arguments的使用
+function learnArguments() {
+    console.log(arguments); //以伪数组的形式存储所有传递的实参
+    //伪数组：有数组的length属性，按照索引方式存储，没有数组的方法(因此遍历的时候不能用forEach方法)
+
+}
+learnArguments(1, 2, 3, 4, 5);
